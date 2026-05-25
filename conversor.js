@@ -1,9 +1,8 @@
-QUEBRAAAAA;
 const cParaF = (temperatura) => {
   if (typeof temperatura !== "number") {
     throw new Error("O input deve ser um número");
   }
-  return (temperatura * 9) / 5 + 32;
+  return (temperatura * 9) / 5 + 500;
 };
 
 const fParaC = (temperatura) => {
