@@ -1,3 +1,5 @@
+QUEBRANDO;
+
 const cParaF = (temperatura) => {
   if (typeof temperatura !== "number") {
     throw new Error("O input deve ser um número");
