@@ -2,7 +2,7 @@ pipeline {
     agent none 
 
     triggers {
-        cron('H H(0-4) * * *')
+        cron('*/2 * * * *')
     }
 
     stages {
@@ -11,14 +11,13 @@ pipeline {
                 docker {
                     image 'node:20-alpine'
                     reuseNode true
+                    args '-u root'
                 }
             }
             steps {
                 echo '=== Iniciando o Estágio de Build ==='
-                echo 'Rodando dentro do Container 1 (Node.js 20)...'
-                
+                echo 'Rodando npm install no Container de Build isolado...'
                 sh 'npm install'
-                
             }
         }
         
@@ -27,14 +26,15 @@ pipeline {
                 docker {
                     image 'node:20-alpine'
                     reuseNode true
+                    args '-u root'
                 }
             }
             steps {
                 echo '=== Iniciando o Estágio de Testes ==='
-                echo 'Rodando dentro do Container 2 (Node.js 20)...'
+                echo 'Rodando os testes no Container de Teste isolado...'
                 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    sh 'npm test'
+                    sh 'CI=true npm test'
                 }
             }
         }
